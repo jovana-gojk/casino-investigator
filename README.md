@@ -47,6 +47,14 @@ Clone the repository and install the required packages in requirements.txt via:
 Run the investigation game via cmd:
 ```python src/main.py```
 
+## Project Structure
+Project is contained with the casino-investigator folder with the src folder, `.gitignore`, `README.md`, and `requirements.txt`.
+In the src folder is: `simulate.py`, `model.py`, and `main.py`.
+
+`simulate.py`: Simulates roulette wheel spins, as well as fair and cheating casino sessions. If a casino session is not fair, a random bias is chosen from the pool and that casino session only includes that type of cheating.
+`model.py`: Trains the main machine learning models using the simulated fair and cheating data. 
+`main.py`: Includes the main game terminal interface and runs each process.
+
 ## Limitations
 The casino data is simulated, so the models are designed to demonstrate machine learning techniques rather than detect real casino fraud. Currently, cheating probability is implemented via forcing a certain outcome if the random percentage is rolled, instead of raising the probability of the outcome itself.
 
