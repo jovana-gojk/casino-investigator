@@ -194,7 +194,7 @@ def investigate_casino(history, casino_fair):
     elif choice == "2":
         model = des_tree_model(all_data)
         prediction = model.predict([features])
-
+        
     elif choice == "3":
         model = rand_forest_model(all_data)
         prediction = model.predict([features])
