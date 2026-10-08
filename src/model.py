@@ -70,19 +70,3 @@ def iso_forest_model(fair_data, cheating_data):
     model.fit(fair_train)
     
     return model
-
-    """# Predict on fair testing set and cheating data
-    fair_predictions = model.predict(fair_test)
-    cheating_predictions = model.predict(cheating_data)
-
-    # Calculate the number of anomalies detected in fair and cheating sessions
-    fair_anomalies = sum(pred == -1 for pred in fair_predictions)
-    cheating_anomalies = sum(pred == -1 for pred in cheating_predictions)
-
-    # Calculate total accuracy of the model
-    total_correct = len(fair_test) - fair_anomalies
-    cheating_correct = cheating_anomalies
-
-    total_accuracy = (total_correct + cheating_correct) / (len(fair_test) + len(cheating_data))
-    print(f"Total isolation forest accuracy: {total_accuracy:.2%}")
-    """
