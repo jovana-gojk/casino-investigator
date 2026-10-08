@@ -114,8 +114,9 @@ def wheel_spin():
             print(frame)
             time.sleep(0.15)
 
-    print("SPINNING COMPLETE. RESULTS COLLECTED.")
-    print("MOVE TO CASINO DATA? Y/N:")
+    print("THE WHEEL HAS STOPPED.")
+    print("1000 SPINS HAVE BEEN COLLECTED.")
+    print("\nMOVE TO CASINO DATA? Y/N:")
     user_input = input().upper()
     if user_input == "Y":
         print("MOVING TO CASINO DATA...")
@@ -124,13 +125,29 @@ def wheel_spin():
   
     return history, user_input, casino_fair
 
-def casino_data(history):
-    print("CASINO DATA")
-    print("LAST 20 SPINS:")
-    for i in range(0, len(history[-20:]), 10):
-        print("  ".join(str(x) for x in history[-20:][i:i+10]))
+def color_number(n):
+    red = '\033[91m'
+    black = '\033[30m'
+    green = '\033[92m'
+    default = '\033[0m'
+    red_numbers = list(range(1, 10, 2)) + list(range(12, 18, 2)) + list(range(19, 28, 2))
 
-    user_input = input("SEE DATA FEATURES Y/N: ").upper()
+    if n == 0:
+        return f"{green}{n}{default}"
+    if n in red_numbers:
+        return f"{red}{n}{default}"
+    return f"{black}{n}{default}"
+
+def casino_data(history):
+    print("\nCASINO DATA")
+    print("-" * 50)
+    print("LAST 20 SPINS:")
+    print("-" * 50)
+    for i in range(0, len(history[-20:]), 10):
+        row = history[-20:][i:i+10]
+        print("  ".join(color_number(x) for x in row))
+
+    user_input = input("\nSEE DATA FEATURES Y/N: ").upper()
 
     if user_input == "Y":
         features = extract_features(history)
@@ -139,24 +156,35 @@ def casino_data(history):
         print(f"{'FEATURE':<25} {'VALUE':>10}")
         print("-" * 50)
         print(f"{'MAXIMUM NUMBER FREQ':<25} {features[0]:>10}")
-        print(f"{'RED DIFFERENCE':<25} {features[1]:>10}")
-        print(f"{'EVEN DIFFERENCE':<25} {features[2]:>10}")
-        print(f"{'HIGH/LOW DIFFERENCE':<25} {features[3]:>10}")
+        print(f"{'RED DIFFERENCE':<25} {round(features[1], 1):>10}")
+        print(f"{'EVEN DIFFERENCE':<25} {round(features[2], 1):>10}")
+        print(f"{'HIGH/LOW DIFFERENCE':<25} {round(features[3], 1):>10}")
 
+    print("\nDO YOU THINK THE CASINO IS FAIR OR CHEATING: ")
+    print("1. FAIR")
+    print("2. CHEATING")
+    your_guess = input("\nYOUR INVESTIGATION: ")
     input("PRESS ENTER TO CONTINUE TO INVESTIGATION...")
+
+    return your_guess
 
 def investigate_casino(history, casino_fair):
     fair_data, cheating_data = sort_data()
     all_data = fair_data + cheating_data
     features = extract_features(history)
-    print("CHOOSE A MODEL TO INVESTIGATE THE CASINO:")
-    print("SUPERVISED LEARNING MODELS:")
+
+    print("\nCHOOSE A MODEL TO INVESTIGATE THE CASINO:")
+
+    print("\nSUPERVISED LEARNING MODELS:")
+    print("-" * 50)
     print("1. LOGISTIC REGRESSION")
     print("2. DECISION TREE")
     print("3. RANDOM FOREST")
-    print("UNSUPERVISED LEARNING MODEL:")
+
+    print("\nUNSUPERVISED LEARNING MODEL:")
+    print("-" * 50)
     print("4. ISOLATION FOREST")
-    choice = input("MODEL: ")
+    choice = input("MODEL: \n")
 
     # Supervised learning models to classify fair and cheating sessions
     if choice == "1":
@@ -166,6 +194,7 @@ def investigate_casino(history, casino_fair):
     elif choice == "2":
         model = des_tree_model(all_data)
         prediction = model.predict([features])
+        
     elif choice == "3":
         model = rand_forest_model(all_data)
         prediction = model.predict([features])
@@ -175,22 +204,45 @@ def investigate_casino(history, casino_fair):
         model = iso_forest_model(fair_data, cheating_data)
         prediction = model.predict([features])
 
+    if casino_fair:
+        casino_truth = "FAIR"
+    else:
+        casino_truth = "CHEATING"
+
+    print("-" * 50)
     if prediction[0] == 1:
         print("MODEL PREDICTION: CASINO IS CHEATING")
-        print(f"CASINO IS... ")
+
+        print(f"CASINO IS... {casino_truth}")
+        if casino_fair:
+            print("THE MODEL IS WRONG")
+        else:
+            print("THE MODEL IS RIGHT")
     else:
         print("MODEL PREDICTION: CASINO IS FAIR")
+        print(f"CASINO IS... {casino_truth}")
+        if casino_fair:
+            print("THE MODEL IS RIGHT")
+        else:
+            print("THE MODEL IS WRONG")
 
 def main():
-    choice =game_start()
+    choice = game_start()
     if choice == "Y":
         history, user_input, casino_fair = wheel_spin()
         if user_input == "Y":
-            casino_data(history)
+            your_guess = casino_data(history)
         investigate_casino(history, casino_fair)
+        if your_guess == "1" and casino_fair or your_guess == "2" and not casino_fair:
+            answer = "RIGHT"
+        else:
+            answer = "WRONG"
+        print(f"YOU WERE... {answer}")
     else:
         print("EXITING THE GAME...")
         return
+    
+    print("THANKS FOR PLAYING THE CASINO INVESTIGATOR... TILL NEXT TIME...")
 
 
 if __name__ == "__main__":
