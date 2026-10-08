@@ -77,13 +77,6 @@ def iso_forest_model(fair_data, cheating_data):
     fair_anomalies = sum(pred == -1 for pred in fair_predictions)
     cheating_anomalies = sum(pred == -1 for pred in cheating_predictions)
 
-    # Print fair false positive rate out of the testing set
-    print(f"False positive fair sessions: {fair_anomalies} out of {len(fair_test)}")
-    print(f"False positive rate: {fair_anomalies / len(fair_test):.2%}")
-    # Print detection rate out of the cheating data
-    print(f"Cheating sessions detected: {cheating_anomalies} out of {len(cheating_data)}")
-    print(f"Detection rate: {cheating_anomalies / len(cheating_data):.2%}")
-
     # Calculate total accuracy of the model
     total_correct = len(fair_test) - fair_anomalies
     cheating_correct = cheating_anomalies
