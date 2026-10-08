@@ -42,10 +42,10 @@ Each supervised learning model is trained for binary classification of the casin
 
 ## Running the Project
 Clone the repository and install the required packages in requirements.txt via:
-'''pip install -r requirements.txt'''
+'pip install -r requirements.txt'
 
 Run the investigation game via cmd:
-'''python src/main.py'''
+'python src/main.py'
 
 ## Limitations
 The casino data is simulated, so the models are designed to demonstrate machine learning techniques rather than detect real casino fraud. Currently, cheating probability is implemented via forcing a certain outcome if the random percentage is rolled, instead of raising the probability of the outcome itself.
