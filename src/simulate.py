@@ -1,6 +1,6 @@
 import random
 
-random.seed(67)  # Set a seed for reproducibility
+
 def simulate_casino(fair=True, cheating_prob=0.03, spins=1000):
     results = []
 

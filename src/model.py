@@ -1,3 +1,5 @@
+from xml.parsers.expat import model
+
 import pandas as pd
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LogisticRegression
@@ -17,13 +19,18 @@ def log_reg_model(data):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    for C in [0.001, 0.01, 0.1, 1, 10, 100]:
-        model = LogisticRegression(C=C, max_iter=1000)
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        print(f"Logistic Regression with C={C}: Accuracy = {accuracy_score(y_test, predictions):.2%}")
+    # Found that C=0.01 gives on average best accuracy
+    model = LogisticRegression(C=0.01, max_iter=1000)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    print(f"Logistic Regression Accuracy = {accuracy_score(y_test, predictions):.2%}")
 
-def des_tree_model(data):
+    scores = cross_val_score(model, X, y, cv=5)
+
+    print(scores)
+    print(f"Mean Accuracy: {scores.mean():.2%}")
+
+def des_tree_model(data):   
     data = pd.DataFrame(data)
 
     labels = [0] * 500 + [1] * 500
@@ -35,11 +42,16 @@ def des_tree_model(data):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    for max_depth in [1, 2, 3, 5, 10, 15, None]:
-        model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        print(f"Decision Tree with max_depth={max_depth}: Accuracy = {accuracy_score(y_test, predictions):.2%}")
+    # Found that max_depth=5 gives on average best accuracy
+    model = DecisionTreeClassifier(max_depth=5, random_state=42)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    print(f"Decision Tree Accuracy = {accuracy_score(y_test, predictions):.2%}")
+
+    scores = cross_val_score(model, X, y, cv=5)
+
+    print(scores)
+    print(f"Mean Accuracy: {scores.mean():.2%}")
 
 def rand_forest_model(data):
     data = pd.DataFrame(data)
@@ -53,8 +65,13 @@ def rand_forest_model(data):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    for n_estimators in [10, 20, 50, 100]:
-        model = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        print(f"Random Forest with {n_estimators} estimators: Accuracy = {accuracy_score(y_test, predictions):.2%}")
+    # Found that 50 estimators give on average best accuracy 
+    model = RandomForestClassifier(n_estimators=50, random_state=42)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    print(f"Random Forest Accuracy = {accuracy_score(y_test, predictions):.2%}")
+
+    scores = cross_val_score(model, X, y, cv=5)
+
+    print(scores)
+    print(f"Mean Accuracy: {scores.mean():.2%}")
