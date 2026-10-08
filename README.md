@@ -52,7 +52,9 @@ Project is contained with the casino-investigator folder with the src folder, `.
 In the src folder is: `simulate.py`, `model.py`, and `main.py`.
 
 `simulate.py`: Simulates roulette wheel spins, as well as fair and cheating casino sessions. If a casino session is not fair, a random bias is chosen from the pool and that casino session only includes that type of cheating.
+
 `model.py`: Trains the main machine learning models using the simulated fair and cheating data. 
+
 `main.py`: Includes the main game terminal interface and runs each process.
 
 ## Limitations
