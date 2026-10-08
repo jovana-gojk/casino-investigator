@@ -98,6 +98,6 @@ def sort_data():
     for results in cheating_sessions:
         features = extract_features(results)
         cheating_data.append((features))
-        
+
     return fair_data, cheating_data
 
