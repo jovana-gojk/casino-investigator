@@ -1,5 +1,6 @@
 import random
 
+random.seed(67)  # Set a seed for reproducibility
 def simulate_casino(fair=True, cheating_prob=0.03, spins=1000):
     results = []
 
@@ -53,11 +54,11 @@ def sort_data():
     sessions = []
 
     for i in range(500):
-        results = simulate_casino(fair=True, cheating_prob=0.03)
+        results = simulate_casino(fair=True, cheating_prob=0.1)
         sessions.append(results)
 
     for j in range(500):
-        results = simulate_casino(fair=False, cheating_prob=0.03)
+        results = simulate_casino(fair=False, cheating_prob=0.1)
         sessions.append(results)
 
     data = []
