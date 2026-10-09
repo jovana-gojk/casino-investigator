@@ -188,22 +188,27 @@ def investigate_casino(history, casino_fair):
 
     # Supervised learning models to classify fair and cheating sessions
     if choice == "1":
-        model = log_reg_model(all_data)
+        model_name = "LOGISTIC REGRESSION"
+        model, accuracy = log_reg_model(all_data)
         prediction = model.predict([features])
 
     elif choice == "2":
-        model = des_tree_model(all_data)
+        model_name = "DECISION TREE"
+        model, accuracy = des_tree_model(all_data)
         prediction = model.predict([features])
         
     elif choice == "3":
-        model = rand_forest_model(all_data)
+        model_name = "RANDOM FOREST"
+        model, accuracy = rand_forest_model(all_data)
         prediction = model.predict([features])
 
     # Unsupervised learning model to detect cheating sessions
     elif choice == "4":
-        model = iso_forest_model(fair_data, cheating_data)
+        model_name = "ISOLATION FOREST"
+        model, accuracy = iso_forest_model(fair_data, cheating_data)
         prediction = model.predict([features])
 
+    input(f"YOU PICKED {model_name}, ACCURACY: {accuracy:.2%}\nPRESS ENTER TO CONTINUE...")
     if casino_fair:
         casino_truth = "FAIR"
     else:
@@ -228,6 +233,7 @@ def investigate_casino(history, casino_fair):
 
 def main():
     choice = game_start()
+    your_guess = None
     if choice == "Y":
         history, user_input, casino_fair = wheel_spin()
         if user_input == "Y":
@@ -235,6 +241,8 @@ def main():
         investigate_casino(history, casino_fair)
         if your_guess == "1" and casino_fair or your_guess == "2" and not casino_fair:
             answer = "RIGHT"
+        elif your_guess == None:
+            answer = "WRONG (NO ANSWER)"
         else:
             answer = "WRONG"
         print(f"YOU WERE... {answer}")
